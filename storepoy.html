@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zuniverse Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: url("https://i.imgur.com/CeqXetR.jpeg") no-repeat center center/cover;
+      background-attachment: fixed;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 20, 30, 0.7);
+      z-index: -1;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(6px);
+    }
+
+    header img {
+      height: 55px;
+    }
+
+    .menu-icon {
+      font-size: 30px;
+      cursor: pointer;
+      color: white;
+      padding: 8px;
+      transition: transform 0.2s;
+    }
+
+    .menu-icon:hover {
+      transform: scale(1.1);
+    }
+
+    .player-head {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: url('https://mc-heads.net/avatar/Steve') no-repeat center/cover;
+      margin-right: 15px;
+    }
+
+    .menu-container {
+      position: relative;
+    }
+
+    .dropdown {
+      position: absolute;
+      right: 0;
+      top: 60px;
+      background: rgba(20, 20, 20, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      padding: 10px 0;
+      min-width: 180px;
+      display: none;
+      flex-direction: column;
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .dropdown a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      display: block;
+      transition: background 0.3s;
+    }
+
+    .dropdown a:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* STORE SECTION */
+    .store-section {
+      padding: 100px 40px 80px;
+      text-align: center;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .store-section h1 {
+      font-size: 2.5rem;
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+      margin-bottom: 20px;
+    }
+
+    .store-section p {
+      color: #d0e3ff;
+      font-size: 1.1rem;
+      margin-bottom: 50px;
+    }
+
+    .rank-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 30px;
+      justify-items: center;
+    }
+
+    .rank-card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
+      padding: 30px 20px;
+      width: 100%;
+      max-width: 280px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .rank-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.25);
+    }
+
+    .rank-card h2 {
+      font-size: 1.6rem;
+      color: #ffd84d;
+      margin-bottom: 10px;
+    }
+
+    .rank-card span {
+      display: block;
+      color: #cfe7ff;
+      margin-bottom: 15px;
+      font-size: 0.95rem;
+    }
+
+    .rank-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .btn {
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+      border: none;
+    }
+
+    .btn-info {
+      background: transparent;
+      border: 2px solid #fff;
+      color: #fff;
+    }
+
+    .btn-info:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-buy {
+      background: #ffd84d;
+      color: #333;
+    }
+
+    .btn-buy:hover {
+      background: #ffe580;
+    }
+
+    /* POPUP */
+    .popup {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+
+    .popup-content {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 15px;
+      padding: 30px 40px;
+      max-width: 400px;
+      text-align: center;
+      backdrop-filter: blur(15px);
+      color: white;
+      box-shadow: 0 0 25px rgba(0,0,0,0.4);
+      animation: fadeIn 0.3s ease;
+    }
+
+    .popup-content h3 {
+      color: #ffd84d;
+      margin-bottom: 15px;
+      font-size: 1.4rem;
+    }
+
+    .popup-content p {
+      margin-bottom: 20px;
+      line-height: 1.6;
+      font-size: 1rem;
+    }
+
+    .close-btn {
+      padding: 8px 18px;
+      background: #ffd84d;
+      color: #333;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .close-btn:hover {
+      background: #ffe580;
+    }
+
+    footer {
+      text-align: center;
+      color: #ccc;
+      padding: 50px 0 20px;
+      font-size: 0.9rem;
+    }
+
+    @media(max-width: 600px) {
+      .store-section h1 { font-size: 2rem; }
+      .popup-content { width: 90%; padding: 25px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="https://i.imgur.com/yadXSl4.png" alt="Zuniverse Logo" />
+    <div style="display: flex; align-items: center; margin-left: auto;">
+      <div class="player-head" id="playerHead"></div>
+      <div class="menu-container">
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <div class="dropdown" id="dropdownMenu">
+          <a href="index.html">🏠 Beranda</a>
+          <a href="store.html">🛒 Store</a>
+          <a href="wiki.html">📘 Wiki</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="store-section">
+    <h1>💎 Zuniverse Rank Store</h1>
+    <p>Pilih rank terbaikmu dan nikmati kekuatan di dunia Zuniverse SMP!</p>
+
+    <div class="rank-grid" id="rankGrid"></div>
+  </section>
+
+  <footer>
+    © 2025 Zuniverse SMP | Semua hak dilindungi.
+  </footer>
+
+  <!-- POPUPS -->
+  <div class="popup" id="infoPopup">
+    <div class="popup-content" id="infoContent"></div>
+  </div>
+
+  <div class="popup" id="buyPopup">
+    <div class="popup-content" id="buyContent"></div>
+  </div>
+
+  <script>
+    const ranks = [
+      { name: "Perintis", desc: "Langkah pertama menuju kejayaan di Zuniverse." },
+      { name: "Juragan", desc: "Rank pedagang sukses dengan hak istimewa." },
+      { name: "Pewaris", desc: "Pemilik warisan dan kekuatan yang dihormati." },
+      { name: "Tenryuubito", desc: "Kaum elite dengan fasilitas tanpa batas." },
+      { name: "Pemerintah", desc: "Pengendali aturan dan pelindung dunia Zuniverse." },
+      { name: "Presiden", desc: "Pemimpin tertinggi dengan semua kekuasaan." }
+    ];
+
+    const rankGrid = document.getElementById("rankGrid");
+    rankGrid.innerHTML = ranks.map(r => `
+      <div class="rank-card">
+        <h2>${r.name}</h2>
+        <span>${r.desc}</span>
+        <div class="rank-buttons">
+          <button class="btn btn-info" onclick="showInfo('${r.name}')">Info</button>
+          <button class="btn btn-buy" onclick="showBuy('${r.name}')">Buy</button>
+        </div>
+      </div>
+    `).join("");
+
+    const infoData = {
+      Perintis: "Fitur: /home 1x, tag [Perintis], starter kit.",
+      Juragan: "Fitur: /home 3x, /hat, bonus harian 1.000 coins.",
+      Pewaris: "Fitur: /nick, efek partikel unik, akses area VIP.",
+      Tenryuubito: "Fitur: /fly, crate eksklusif, akses dunia langka.",
+      Pemerintah: "Fitur: /god, /repair, warna nama khusus.",
+      Presiden: "Fitur: semua kemampuan rank sebelumnya + kekuasaan penuh."
+    };
+
+    function toggleMenu() {
+      const menu = document.getElementById("dropdownMenu");
+      menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+    }
+
+    window.addEventListener("click", e => {
+      const menu = document.getElementById("dropdownMenu");
+      const icon = document.querySelector(".menu-icon");
+      if (!icon.contains(e.target) && !menu.contains(e.target)) menu.style.display = "none";
+    });
+
+    function showInfo(rank) {
+      document.getElementById("infoContent").innerHTML = `
+        <h3>${rank} Rank</h3>
+        <p>${infoData[rank]}</p>
+        <button class="close-btn" onclick="closePopup()">Tutup</button>`;
+      document.getElementById("infoPopup").style.display = "flex";
+    }
+
+    function showBuy(rank) {
+      document.getElementById("buyContent").innerHTML = `
+        <h3>Beli ${rank} Rank</h3>
+        <p>💳 <strong>Metode Pembayaran:</strong><br>Dana / Gopay / QRIS<br><br>
+        📘 <strong>Cara Beli:</strong><br>1. Hubungi admin via Discord.<br>2. Kirim bukti pembayaran.<br>3. Rank aktif otomatis setelah verifikasi.</p>
+        <button class="close-btn" onclick="closePopup()">Tutup</button>`;
+      document.getElementById("buyPopup").style.display = "flex";
+    }
+
+    function closePopup() {
+      document.getElementById("infoPopup").style.display = "none";
+      document.getElementById("buyPopup").style.display = "none";
+    }
+  </script>
+</body>
+</html>
